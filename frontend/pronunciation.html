@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronunciation Evaluation - AI English Learning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/style2.css">
+    <link rel="stylesheet" href="styles/styleproduction.css">
+    <style>
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the AI English Learning Platform</h1>
+        <nav>
+            <a href="main.html">Home</a>
+            <a href="pronunciation.html" class="active"> Pronunciation Training</a>
+            <a href="javascript:void(0);" onclick="logout()">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <h2>Practice Your Pronunciation</h2>
+        <p>Select a word to practice. Click on the word to hear the pronunciation.</p>
+
+        <div class="word-list">
+            <div class="word-card" onclick="speak('Good morning')">
+                <div>Good morning</div>
+            </div>
+            <div class="word-card" onclick="speak('Goodbye')">
+                <div>Goodbye</div>
+            </div>
+            <div class="word-card" onclick="speak('Thank you')">
+                <div>Thank you</div>
+            </div>
+            <div class="word-card" onclick="speak('Please')">
+                <div>Please</div>
+            </div>
+        </div>
+        
+        <h2>Pronunciation Evaluation</h2>
+        <!-- نظام الإشعارات -->
+        <div id="notification" class="message hidden"></div>
+        
+        <!-- واجهة التسجيل -->
+        <div class="recording-panel">
+            <p>Follow these steps:</p>
+            <ol>
+                <li>Click the record button</li>
+                <li>Pronounce the word clearly</li>
+                <li>Click stop when finished</li>
+                <li>Evaluate your pronunciation</li>
+            </ol>
+            
+            <div class="controls">
+                <button id="recordButton">
+                    <i class="fas fa-microphone"></i> Start Recording
+                </button>
+                <button id="stopButton" class="hidden">
+                    <i class="fas fa-stop"></i> Stop Recording
+                </button>
+                <button id="evaluateButton" class="hidden">
+                    <i class="fas fa-check"></i> Evaluate Pronunciation
+                </button>
+            </div>
+            
+            <audio id="audioPlayback" controls class="hidden"></audio>
+        </div>
+        
+        <!-- نتائج التقييم -->
+        <div id="results" class="hidden">
+            <h3>Evaluation Results</h3>
+            <h2>Your Pronunciation Accuracy</h2>
+            <p id="accuracyResult"></p>
+
+
+            <div id="scoreBar" class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            
+            <p id="scoreText"></p>
+            <button id="retryButton" onclick="resetRecording()">
+                <i class="fas fa-redo"></i> Try Again
+            </button>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 AI Language Learning Platform. All rights reserved.</p>
+    </footer>
+    <script>
+        const appState = {
+            mediaRecorder: null,
+            audioChunks: [],
+            audioBlob: null,
+            isRecording: false
+        };
+        
+        const elements = {
+            recordButton: document.getElementById('recordButton'),
+            stopButton: document.getElementById('stopButton'),
+            audioPlayback: document.getElementById('audioPlayback'),
+            notification: document.getElementById('notification'),
+            results: document.getElementById('results'),
+            scoreText: document.getElementById('scoreText'),
+            evaluateButton: document.getElementById('evaluateButton')
+        };
+        
+        // مصادقة المستخدم
+        function checkAuth() {
+            const token = sessionStorage.getItem('token');
+            if (!token) {
+                showNotification('Please login first', 'error');
+                setTimeout(() => window.location.href = 'index.html', 2000);
+                return false;
+            }
+            return true;
+        }
+        
+        // بدء التسجيل
+        async function startRecording() {
+            if (!checkAuth()) return;
+        
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                appState.mediaRecorder = new MediaRecorder(stream);
+                
+                appState.mediaRecorder.ondataavailable = e => {
+                    appState.audioChunks.push(e.data);
+                };
+                
+                appState.mediaRecorder.onstop = () => {
+                    appState.audioBlob = new Blob(appState.audioChunks, { type: 'audio/wav' });
+                    elements.audioPlayback.src = URL.createObjectURL(appState.audioBlob);
+                    toggleElements(true);
+                };
+                
+                appState.mediaRecorder.start();
+                appState.isRecording = true;
+                toggleElements();
+                showNotification('Recording started...', 'success');
+                
+            } catch (error) {
+                showNotification('Microphone access required!', 'error');
+                console.error('Recording Error:', error);
+            }
+        }
+        
+        // إيقاف التسجيل
+        function stopRecording() {
+            if (appState.mediaRecorder && appState.isRecording) {
+                appState.mediaRecorder.stop();
+                appState.isRecording = false;
+                toggleElements();
+                showNotification('Recording saved', 'success');
+                elements.evaluateButton.classList.remove('hidden'); // إظهار زر التقييم
+            }
+        }
+        
+        // تقييم النطق
+        async function evaluatePronunciation() {
+            if (!appState.audioBlob) {
+                showNotification('No recording to evaluate', 'warning');
+                return;
+            }
+        
+            const formData = new FormData();
+            formData.append('audio', appState.audioBlob, 'recording.wav');
+        
+            try {
+                console.log('Sending audio for evaluation...'); // إضافة سجل لتتبع
+                const response = await fetch('http://127.0.0.1:5000/api/evaluate', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                    },
+                    body: formData
+                });
+                
+                console.log('Response received:', response); // سجل رد الخادم
+                
+                const result = await response.json();
+                console.log('Evaluation result:', result); // سجل نتائج التقييم
+                
+                if (response.ok) {
+                    showResults(result);
+                } else {
+                    showNotification(result.error || 'Evaluation failed', 'error');
+                }
+                
+            } catch (error) {
+                showNotification('Network error. Please try again.', 'error');
+                console.error('Evaluation Error:', error);
+            }
+        }
+        
+        // وظائف مساعدة
+        function toggleElements(afterStop = false) {
+            elements.recordButton.classList.toggle('hidden', afterStop);
+            elements.stopButton.classList.toggle('hidden', !appState.isRecording);
+            elements.audioPlayback.classList.toggle('hidden', !afterStop);
+            elements.results.classList.toggle('hidden', !afterStop);
+        }
+        
+        function showNotification(message, type = 'info') {
+            elements.notification.className = `message ${type}`;
+            elements.notification.textContent = message;
+            elements.notification.classList.remove('hidden');
+            setTimeout(() => elements.notification.classList.add('hidden'), 5000);
+        }
+        
+        function showResults(data) {
+            console.log(data); // لعرض البيانات في وحدة التحكم
+            if (data.score !== undefined) { // Check if 'score' exists
+                elements.scoreText.textContent = `Score: ${data.score}%`;
+                document.querySelector('.progress-fill').style.width = `${data.score}%`;
+                elements.results.classList.remove('hidden'); // إظهار نتائج التقييم
+            } else {
+                // يمكنك اختيار إزالة هذا الشرط إذ لم يكن لديك بصورة فريدة
+                // showNotification('No score available. Please try again.', 'error');
+            }
+        }
+        
+        function resetRecording() {
+            appState.audioChunks = [];
+    appState.audioBlob = null;
+    elements.audioPlayback.src = '';
+    elements.evaluateButton.classList.add('hidden'); // إخفاء زر التقييم بعد إعادة الضبط
+    toggleElements(false); // إعادة تعيين مكونات الواجهة
+}
+
+function speak(word) {
+    const utterance = new SpeechSynthesisUtterance(word);
+    speechSynthesis.speak(utterance);
+}
+
+// حدث المستمعين
+elements.recordButton.addEventListener('click', startRecording);
+elements.stopButton.addEventListener('click', stopRecording);
+elements.evaluateButton.addEventListener('click', evaluatePronunciation);
+
+// عرض النتيجة عند التقييم
+async function displayAccuracy() {
+    const accuracy = localStorage.getItem('accuracy');
+    if (accuracy) {
+        document.getElementById('accuracyResult').innerText = `Your pronunciation score is: ${accuracy}%`;
+        localStorage.removeItem('accuracy'); // Clear the accuracy from localStorage after displaying
+    } else {
+        document.getElementById('accuracyResult').innerText = "No accuracy data available.";
+    }
+}
+
+// استدعاء عرض النتائج عند تحميل الصفحة
+window.onload = () => {
+    displayAccuracy(); // عرض الدقة عند تحميل الصفحة
+};
+function logout()
+ {
+            sessionStorage.removeItem('token'); // Remove the token from session storage
+            window.location.href = 'index.html'; // Redirect to login page
+        }
+</script>
+</body>
+</html>

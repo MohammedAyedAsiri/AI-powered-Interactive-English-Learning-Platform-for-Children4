@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Phrases Learning</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="styles/style2.css">
+
+
+
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .phrases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .phrase-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .phrase-card:hover {
+            transform: translateY(-5px);
+            background: #f8f9fa;
+        }
+
+        .arabic-text {
+            font-size: 1.2em;
+            color: #2A2F4F;
+            margin-bottom: 10px;
+        }
+
+        .english-text {
+            font-size: 1.4em;
+            color: #917FB3;
+            font-weight: bold;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .next-btn {
+            background: #2A2F4F;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .next-btn:hover {
+            background: #917FB3;
+        }
+
+        .pronunciation-icon {
+            margin-top: 10px;
+            color: #2A2F4F;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+    <h1>Welcome to the AI English Learning Platform</h1>
+    
+    <nav>
+        <a href="main.html">Home</a>
+        <a href="pronunciation.html">Pronunciation Evaluation</a>
+        <a href="javascript:void(0);" onclick="logout()">Logout</a>
+    </nav>
+</header>
+    <div class="container">
+   
+
+        <div class="phrases-grid">
+            <!-- Morning Phrases -->
+            <div class="phrase-card" onclick="speakPhrase('Good morning')">
+                <div class="arabic-text">صباح الخير</div>
+                <div class="english-text">Good morning</div>
+                <i class="fas fa-volume-up pronunciation-icon"></i>
+            </div>
+
+            <!-- Greeting Phrases -->
+            <div class="phrase-card" onclick="speakPhrase('How are you?')">
+                <div class="arabic-text">كيف حالك؟</div>
+                <div class="english-text">How are you?</div>
+                <i class="fas fa-volume-up pronunciation-icon"></i>
+            </div>
+
+    
+            <div class="phrase-card" onclick="speakPhrase('I would like a coffee')">
+                <div class="arabic-text">أود الحصول على قهوة</div>
+                <div class="english-text">I'd like a coffee</div>
+                <i class="fas fa-volume-up pronunciation-icon"></i>
+            </div>
+
+
+            <div class="phrase-card" onclick="speakPhrase('Where is the nearest bank?')">
+                <div class="arabic-text">أين يوجد أقرب بنك؟</div>
+                <div class="english-text">Where's the nearest bank?</div>
+                <i class="fas fa-volume-up pronunciation-icon"></i>
+            </div>
+
+            <div class="phrase-card" onclick="speakPhrase('Thank you very much')">
+                <div class="arabic-text">شكراً جزيلاً</div>
+                <div class="english-text">Thank you very much</div>
+                <i class="fas fa-volume-up pronunciation-icon"></i>
+            </div>
+
+            <div class="phrase-card" onclick="speakPhrase('How much does this cost?')">
+                <div class="arabic-text">كم سعر هذا؟</div>
+                <div class="english-text">How much is this?</div>
+                <i class="fas fa-volume-up pronunciation-icon"></i>
+            </div>
+
+            <div class="phrase-card" onclick="speakPhrase('I need help')">
+                <div class="arabic-text">أحتاج إلى مساعدة</div>
+                <div class="english-text">I need help</div>
+                <i class="fas fa-volume-up pronunciation-icon"></i>
+            </div>
+
+            <div class="phrase-card" onclick="speakPhrase('Where is the bathroom?')">
+                <div class="arabic-text">أين الحمام؟</div>
+                <div class="english-text">Where's the bathroom?</div>
+                <i class="fas fa-volume-up pronunciation-icon"></i>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <button class="next-btn" onclick="window.location.href='pronunciation.html'">
+                Start Evaluation Test   <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function speakPhrase(text) {
+            // Check if speech synthesis is supported
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                // Set voice preferences
+                const voices = window.speechSynthesis.getVoices();
+                utterance.voice = voices.find(voice => voice.lang === 'en-GB') || voices[0];
+                
+                // Adjust speech parameters
+                utterance.pitch = 1;
+                utterance.rate = 0.9;
+                utterance.volume = 1;
+
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('Speech synthesis is not supported in your browser');
+            }
+        }
+
+        // Load voices when available
+        window.speechSynthesis.onvoiceschanged = function() {
+            const voices = window.speechSynthesis.getVoices();
+        };
+
+        function logout() {
+            sessionStorage.removeItem('token'); // Remove the token from session storage
+            window.location.href = 'index.html'; // Redirect to login page
+        }
+    </script>
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2025 AI English Learning Platform. All rights reserved.</p>
+  
+        <div class="social-media">
+            <a href="https://www.facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</footer>
+</body>

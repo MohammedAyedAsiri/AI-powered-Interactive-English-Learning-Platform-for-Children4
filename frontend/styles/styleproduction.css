@@ -1,0 +1,52 @@
+ 
+h2 {
+    margin-bottom: 15px;
+}
+ 
+
+.hidden { display: none; }
+.message {
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.success { background: #d4edda; color: #155724; }
+.error { background: #f8d7da; color: #721c24; }
+.warning { background: #fff3cd; color: #856404; }
+button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#recordButton { background: #77002e; color: white; }
+#stopButton { background: #f44336; color: white; }
+#evaluateButton { background: #2196F3; color: white; }
+
+
+/* Word List Styling */
+.word-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.word-card {
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 20px;
+    width: 150px; /* Fixed width for uniformity */
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.word-card:hover {
+    transform: scale(1.05); /* Zoom effect on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

@@ -1,0 +1,55 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+
+
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open index.html",
+            "file": "c:\\wamp64\\www\\AI-English-Learning-Platform\\pro\\templates\\index.html"
+        }
+    ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip install -r requirements.txt
+(venv) pip install --upgrade pip setuptools wheel
+(venv) pip install pyaudio  # يتطلب تثبيت PortAudio أولاً
+
+
+
+(venv) pip install pipwin
+(venv) pipwin install pyaudio
+
+
+(venv) pip install numpy==1.21.6  # أو أحدث إصدار متوافق
+
+
+
+(venv) pip install --no-cache-dir numpy==1.21.2
+
+
+
+(venv) pip uninstall numpy -y
+(venv) pip install numpy==1.23.5  # إصدار مستقر ومتوافق

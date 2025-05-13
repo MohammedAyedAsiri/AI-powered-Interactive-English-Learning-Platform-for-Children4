@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronunciation Progress - AI English Learning Platform</title>
+    <link rel="stylesheet" href="styles/style2.css">
+    <style>
+  
+    
+        /* Main content styling */
+        main {
+            padding: 20px;
+        }
+
+        #accuracyResult {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+ 
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Pronunciation Progress</h1>
+        <nav>
+            <a href="main.html">Home</a>
+            <a href="pronunciation.html">Pronunciation Evaluation</a>
+            <a href="user_profile.html">User Profile</a>
+            <a href="javascript:void(0);" onclick="logout()">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Your Pronunciation Accuracy</h2>
+        <p id="accuracyResult"></p>
+
+       
+    </main>
+    <center><a href="pronunciation2.html" class="button">Back to Practice</a></center>
+    <script>
+        // Get accuracy from localStorage and display it
+        const accuracy = localStorage.getItem('accuracy');
+        if (accuracy) {
+            document.getElementById('accuracyResult').innerText = `Your pronunciation score is 80: ${accuracy}%`;
+            localStorage.removeItem('accuracy'); // Clear the accuracy from localStorage after displaying
+        } else {
+            document.getElementById('accuracyResult').innerText = "No accuracy data available.";
+        }
+
+        function logout() {
+            sessionStorage.removeItem('token'); // Remove token from session storage
+            window.location.href = 'index.html'; // Redirect to login
+        }
+    </script>
+</body>
+</html>

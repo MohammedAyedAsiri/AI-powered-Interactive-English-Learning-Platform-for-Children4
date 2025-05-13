@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - AI English Learning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="styles/style2.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .message {
+            padding: 10px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 20px;
+            background: #3498db;
+            color: white;
+        }
+
+        .social-media a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the AI English Learning Platform</h1>
+        
+        <nav>
+            <a href="main.html">Home</a>
+            <a href="pronunciation.html">Pronunciation Evaluation</a>
+            <a href="profile.html">User Profile</a>
+            <a href="javascript:void(0);" onclick="logout()">Logout</a>
+        </nav>
+    </header>
+
+    <h1>User Profile</h1>
+ 
+    <div class="container">
+        <div class="message hidden" id="profileMessage"></div>
+
+        <h2>Profile Information</h2>
+
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter your username">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email">
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter new password (leave blank to keep current)">
+
+        <button onclick="updateProfile()">Update Profile</button>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            const token = sessionStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'index.html'; // Redirect to login if not logged in
+            } else {
+                fetchUserProfile(token);
+            }
+        };
+    
+        async function fetchUserProfile(token) {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/user_profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': token // Include the token in the header
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch profile information.');
+                }
+
+                const userProfile = await response.json();
+    
+                // Populate the input fields with user data
+                document.getElementById('username').value = userProfile.username;
+                document.getElementById('email').value = userProfile.email;
+            } catch (error) {
+                showMessage('Failed to fetch profile information. Please try again.');
+            }
+        }
+    
+        async function updateProfile() {
+            const token = sessionStorage.getItem('token');
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!token) {
+                showMessage('Please log in to update your profile.');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/update_profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token // Include the token in the header
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.message || 'Failed to update profile.');
+                }
+
+                showMessage(result.message || 'Profile updated successfully!');
+            } catch (error) {
+                showMessage('Failed to update profile. Please try again.');
+            }
+        }
+    
+        function showMessage(message) {
+            const profileMessage = document.getElementById('profileMessage');
+            profileMessage.innerText = message;
+            profileMessage.classList.remove('hidden'); // Show the message
+        }
+    
+        function logout() {
+            sessionStorage.removeItem('token'); // Remove the token from session storage
+            window.location.href = 'index.html'; // Redirect to login page
+        }
+    </script>
+    
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 AI English Learning Platform. All rights reserved.</p>
+      
+            <div class="social-media">
+                <a href="https://www.facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

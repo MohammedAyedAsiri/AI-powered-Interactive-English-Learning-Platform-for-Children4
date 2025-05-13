@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page - AI English Learning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="styles/style2.css">
+    <style>
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to the AI English Learning Platform</h1>
+    
+    <nav>
+        <a href="main.html">Home</a>
+        <a href="pronunciation.html"> Pronunciation Training</a>
+        <a href="pronunciation4.html">Pronunciation Evaluation</a>
+        <a href="user_profile.html">User Profile</a>
+        <a href="javascript:void(0);" onclick="logout()">Logout</a>
+    </nav>
+</header>
+<div class="container">
+    <h2>Engaging Vocabulary Exploration</h2>
+
+    <div class="word-card" onclick="speak('Orange')">
+        <img src="images/orange.jpg" alt="Orange">
+        <div>Orange</div>
+    </div>
+    
+    <div class="word-card" onclick="speak('Grapes')">
+        <img src="images/grapes.jpg" alt="Grapes">
+        <div>Grapes</div>
+    </div>
+    
+    <div class="word-card" onclick="speak('Elephant')">
+        <img src="images/elephant.jpg" alt="Elephant">
+        <div>Elephant</div>
+    </div>
+
+    <div class="word-card" onclick="speak('Frog')">
+        <img src="images/frog.jpg" alt="Frog">
+        <div>Frog</div>
+    </div>
+ 
+        <div class="navigation">
+     
+        
+            <p align="left">
+                <a href="main.html" class="button">
+                    <span>Back</span>
+                </a>
+            </p> 
+        </div>
+        <h1>Start Learning</h1>
+        <button class="button" onclick="startPronunciationEvaluation()">Start Pronunciation Evaluation</button>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            const token = sessionStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'index.html'; // Redirect to login if not logged in
+            }
+        };
+
+        function speak(word) {
+            const utterance = new SpeechSynthesisUtterance(word);
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function startPronunciationEvaluation() {
+            window.location.href = 'pronunciation.html';  
+        }
+
+        function logout() {
+            sessionStorage.removeItem('token'); // Remove the token from session storage
+            window.location.href = 'index.html'; // Redirect to login page
+        }
+    </script>
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2025 AI English Learning Platform. All rights reserved.</p>
+  
+        <div class="social-media">
+            <a href="https://www.facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</footer>
+</body>

@@ -1,0 +1,192 @@
+<!-- داخل قسم النتائج -->
+<div id="results" class="hidden">
+    <h3>📊 Evaluation Results</h3>
+    
+    <!-- شريط التقدم المتحرك -->
+    <div class="progress-container">
+        <div class="progress-bar" id="scoreBar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="score-percent" id="scorePercent">0%</span>
+    </div>
+
+    <!-- تفاصيل النتائج -->
+    <div class="result-details">
+        <div class="result-card accuracy">
+            <i class="fas fa-bullseye"></i>
+            <h4>Accuracy Score</h4>
+            <p id="accuracyScore">85%</p>
+        </div>
+        
+        <div class="result-card fluency">
+            <i class="fas fa-tachometer-alt"></i>
+            <h4>Fluency Level</h4>
+            <p id="fluencyLevel">Intermediate</p>
+        </div>
+        
+        <div class="result-card comparison">
+            <i class="fas fa-exchange-alt"></i>
+            <h4>Pronunciation Comparison</h4>
+            <div class="comparison-text">
+                <p>Your pronunciation: <span id="userPronunciation">"Helo"</span></p>
+                <p>Correct pronunciation: <span id="correctPronunciation">"Hello"</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- تحليل الأخطاء -->
+    <div class="error-analysis">
+        <h4>🗣️ Pronunciation Feedback</h4>
+        <ul id="feedbackList">
+            <li>✅ Correct vowel sound in first syllable</li>
+            <li>⚠️ Missing second 'l' sound</li>
+            <li>⚠️ Stress pattern needs improvement</li>
+        </ul>
+    </div>
+
+    <!-- أدوات التحكم -->
+    <div class="result-controls">
+        <button class="retry-btn" onclick="resetRecording()">
+            <i class="fas fa-redo"></i> Try Again
+        </button>
+        <button class="save-btn" onclick="saveResults()">
+            <i class="fas fa-save"></i> Save Results
+        </button>
+    </div>
+</div>
+
+<style>
+/* أنماط مخصصة للنتائج */
+.progress-container {
+    position: relative;
+    width: 80%;
+    margin: 20px auto;
+    height: 30px;
+    background: #f0f0f0;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    transition: width 1s ease-in-out;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+}
+
+.score-percent {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    color: #333;
+}
+
+.result-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.result-card {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.result-card i {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.accuracy { background: #e8f5e9; }
+.fluency { background: #e3f2fd; }
+.comparison { background: #fffde7; }
+
+.error-analysis {
+    background: #fff3e0;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.error-analysis li {
+    margin: 10px 0;
+    padding: 8px;
+    border-left: 3px solid #FFA726;
+}
+
+.result-controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.retry-btn { background: #f44336; color: white; }
+.save-btn { background: #2196F3; color: white; }
+</style>
+
+<script>
+function showResults(data) {
+    // تحديث النتائج
+    const progress = data.score;
+    
+    // شريط التقدم المتحرك
+    gsap.to("#progressFill", {
+        width: `${progress}%`,
+        duration: 1.5,
+        ease: "power3.out",
+        onUpdate: () => {
+            document.getElementById("scorePercent").textContent = 
+                `${Math.round(progress)}%`;
+        }
+    });
+
+    // تحديث البيانات التفصيلية
+    document.getElementById("accuracyScore").textContent = `${progress}%`;
+    document.getElementById("userPronunciation").textContent = data.user_text;
+    document.getElementById("correctPronunciation").textContent = data.correct_word;
+    document.getElementById("fluencyLevel").textContent = getFluencyLevel(progress);
+    
+    // تحليل الأخطاء
+    const feedbackList = data.feedback.map(f => `<li>${f}</li>`).join('');
+    document.getElementById("feedbackList").innerHTML = feedbackList;
+    
+    // عرض قسم النتائج
+    document.getElementById("results").classList.remove("hidden");
+}
+
+function getFluencyLevel(score) {
+    if (score >= 90) return "Native-like";
+    if (score >= 75) return "Advanced";
+    if (score >= 60) return "Intermediate";
+    return "Beginner";
+}
+
+function saveResults() {
+    // إرسال النتائج إلى الخادم
+    fetch('/api/save-results', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            score: document.getElementById("scorePercent").textContent,
+            feedback: Array.from(document.querySelectorAll('#feedbackList li'))
+                        .map(li => li.textContent)
+        })
+    })
+    .then(response => {
+        if (response.ok) showNotification('Results saved successfully!', 'success');
+    });
+}
+</script>

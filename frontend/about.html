@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - AI English Learning Platform</title>
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+                        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f4f8;
+        }
+
+        header {
+            background-color: #6e0583;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #6e0583;
+            padding: 10px 0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        nav a:hover {
+            background: #917FB3;
+        }
+
+        /* Active class for the current page */
+        nav a.active {
+            background: #917FB3;
+            font-weight: bold;
+        }
+
+        
+
+/* Main Content Styles */
+main {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+/* Form Container Styles */
+#registerContainer, #loginContainer {
+max-width: 400px;
+width: 100%;
+background: white;
+border-radius: 5px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+padding: 20px;
+margin-bottom: 20px;
+}
+
+/* Form Element Styles */
+form {
+display: flex;
+flex-direction: column;
+}
+
+div {
+margin-bottom: 15px;
+}
+
+label {
+margin-bottom: 5px;
+font-weight: bold;
+color: #555;
+}
+
+/* Feedback Message Styles */
+#loginFeedback, #registerFeedback {
+color: red;
+text-align: center;
+margin-top: 10px;
+}
+
+
+input[type="text"], input[type="password"], input[type="email"], input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+.button {
+background-color: #310170;
+color: white;
+padding: 12px 20px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+width: 100%;
+
+}
+
+.button:hover {
+background-color: #3e41e6;
+transform: scale(1.05);
+box-shadow: 0 4px 8px rgba(69, 10, 231, 0.3);
+}
+    button {
+        background-color: #310170;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+            background-color: #310170;
+    }
+
+    .button:hover {
+        background-color: #3e41e6;
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(69, 10, 231, 0.3);
+    }
+
+    .header-buttons {
+        margin-top: 15px; /* Adds some spacing above the buttons */
+    }
+    
+    .header-buttons.button {
+        display: inline-block; /* Allow buttons to sit next to each other */
+        background-color: #774caf;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        margin: 0 10px; /* Space between buttons */
+        transition: background-color 0.3s;
+    }
+    
+    .header-buttons .button:hover {
+        background-color: #0056b3; /* Darker shade for hover effect */
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(69, 10, 231, 0.3);
+    }
+
+
+
+    .message {
+        color: red;
+        text-align: center;
+    }
+
+    .success {
+        color: rgb(13, 0, 128);
+    }
+
+    .hidden {
+        display: none;
+    }
+
+
+
+
+
+    .word-card {
+        display: flex;
+        align-items: center;
+        margin: 15px 0;
+        padding: 10px;
+        background-color: #e7f3fe;
+        border-left: 6px solid #2196F3;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .word-card:hover {
+        background-color: #d0e9ff;
+    }
+
+    .word-card img {
+        width: 60px;
+        height: 60px;
+        margin-right: 15px;
+    }
+
+
+
+
+
+
+
+
+
+    footer {
+        background: #6e0583;
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+    
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .footer-links {
+        margin: 10px 0;
+    }
+    
+    .footer-links a {
+        background: #6e0583;
+        margin: 0 15px;
+        text-decoration: none;
+    }
+    
+    .footer-links a:hover {
+        text-decoration: underline;
+    }
+    
+    .social-media {
+        margin-top: 10px;
+    }
+    
+    .social-media a {
+        color: #fff;
+        margin: 0 10px;
+    }
+    
+    .social-media a:hover {
+        background: #6e0583;
+    }
+
+
+ /* Main Content Styling */
+main {
+    padding: 20px;
+    background-color: #f9f8fa; /* Light background consistent with the theme */
+}
+
+.about-section, .features-section, .why-choose-section {
+    max-width: 800px; /* Limit the width for better readability */
+    margin: 20px auto; /* Center the section */
+    padding: 20px;
+    background-color: #ffffff; /* White background for sections */
+    border-radius: 10px; /* Slightly more rounded corners */
+    box-shadow: 0 2px 10px rgba(19, 0, 0, 0.1); /* Softer shadow for depth */
+}
+
+/* Section Headings */
+h2 {
+    font-size: 24px; /* Larger font size for headings */
+    color: #7602d4; /* Blue color for headings */
+    border-bottom: 2px solid #7602d4; /* Bottom border for emphasis */
+    padding-bottom: 10px; /* Spacing below heading */
+    margin-bottom: 15px; /* Spacing below heading */
+}
+
+/* Paragraph Styling */
+p {
+    line-height: 1.6; /* Improved line height for readability */
+    color: #0833f1; /* Darker text color for paragraphs */
+}
+
+/* Features List */
+ul {
+    list-style-type: none; /* Remove default list styles */
+    padding: 0; /* Remove default padding */
+}
+
+li {
+    background-color: #e9ecef; /* Light background for list items */
+    margin: 10px 0; /* Spacing between items */
+    padding: 15px; /* Padding for items */
+    border-radius: 5px; /* Rounded corners for list items */
+    transition: background-color 0.3s; /* Smooth background change on hover */
+}
+
+li:hover {
+    background-color: #7602d4; /* Change background on hover for interaction */
+color:white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    main {
+        padding: 10px; /* Reduce padding on smaller screens */
+    }
+    .about-section, .features-section, .why-choose-section {
+        padding: 15px; /* Reduce padding on sections for smaller screens */
+    }
+
+    h2 {
+        font-size: 20px; /* Slightly smaller headings on mobile */
+    }
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the AI English Learning Platform</h1>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="login.html">Login | Register</a>
+        <a href="featurePage.html" class="active">Features</a> <!-- Active class applied here -->
+    </nav>
+
+
+
+
+
+    <main>
+        <section class="about-section">
+            <h2>Our Mission</h2>
+            <p>
+                Our mission is to provide innovative and effective language learning solutions 
+                that empower learners to achieve fluency in English through interactive and engaging methods.
+            </p>
+
+            <h2>Features</h2>
+            <ul>
+                <li>Interactive Vocabulary Learning: Enhance your vocabulary with engaging exercises and quizzes.</li>
+                <li>Pronunciation Practice: Use speech recognition to improve your pronunciation and speaking skills.</li>
+                <li>Personalized Learning: Tailored lessons that adapt to your skills and pace.</li>
+                <li>Community Support: Connect with other learners and language enthusiasts through our forums.</li>
+                <li>Progress Tracking: Monitor your learning progress and achievements with our tracking tools.</li>
+            </ul>
+
+            <h2>Why Choose Us?</h2>
+            <p>
+                With our cutting-edge technology and personalized learning paths, 
+                we make mastering English accessible and enjoyable for everyone, 
+                regardless of their starting level. Join our community and take your English language skills 
+                to new heights!
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 AI Language Learning Platform. All rights reserved.</p>
+    </footer>
+</body>
+</html>

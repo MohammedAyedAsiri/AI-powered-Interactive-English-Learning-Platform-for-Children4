@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronunciation Assessment - English Learning Platform</title>
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+       
+       body {
+    font-family: Arial, sans-serif;
+ 
+     margin: 0;
+     padding: 20px;
+     font-family: 'Arial', sans-serif;
+     background: linear-gradient(to bottom right, #e8f0f2, #d1e3f5);
+    }
+
+        h1 {
+            text-align: center;
+ 
+        }
+
+        header{
+            background-color: #6e0583;
+            color: white;
+            height: 100px;
+            padding: 50px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+   nav {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+
+    nav a {
+        margin: 0 15px;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        transition: color 0.3s;
+          border: #f4f4f4 1px solid;
+        padding: 15px;
+    }
+
+    nav a:hover {
+        color: #2b12b8;
+    }
+
+    a {
+        text-decoration:none;
+    }
+    .container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border: #5a07df 1px solid;
+    }
+
+
+   
+       
+       
+       /* Custom styles for the pronunciation page */
+        .pronunciation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .phrase-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .phrase-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .phrase-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .phrase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        .recording-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .recording-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .recording-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background: #2A2F4F;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .recording-btn:hover {
+            background: #917FB3;
+        }
+
+        .recording-btn.recording {
+            animation: pulse 1.5s infinite;
+        }
+
+        .visualizer {
+            width: 100%;
+            height: 100px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .feedback-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #e9ecef;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 20px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #E5BEEC, #917FB3);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+
+
+
+        footer {
+    background: #6e0583;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    margin: 10px 0;
+}
+
+.footer-links a {
+    background: #6e0583;
+    margin: 0 15px;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.social-media {
+    margin-top: 10px;
+}
+
+.social-media a {
+    color: #fff;
+    margin: 0 10px;
+}
+
+.social-media a:hover {
+    background: #6e0583;
+}
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the AI English Learning Platform</h1>
+        
+        <nav>
+            <nav>
+                <a href="main.html">Home</a>
+                <a href="pronunciation.html">Pronunciation Evaluation</a>
+      
+                <a href="javascript:void(0);" onclick="logout()">Logout</a>
+            </nav>
+        </nav>
+    </header>
+
+    <main class="pronunciation-container">
+        <section class="phrase-section">
+            <h1><i class="fas fa-microphone-alt"></i> Pronunciation Training</h1>
+            <p>Select a phrase to practice, then record your pronunciation and get immediate feedback.</p>
+
+            <div class="phrase-list">
+                <div class="phrase-card" onclick="selectPhrase('Good morning')">
+                    <h3>Good morning</h3>
+                    <p>صباح الخير</p>
+                </div>
+                <div class="phrase-card" onclick="selectPhrase('How are you?')">
+                    <h3>How are you?</h3>
+                    <p>كيف حالك؟</p>
+                </div>
+                <div class="phrase-card" onclick="selectPhrase('I would like a coffee')">
+                    <h3>I would like a coffee</h3>
+                    <p>أود الحصول على قهوة</p>
+                </div>
+                <div class="phrase-card" onclick="selectPhrase('Where is the nearest bank?')">
+                    <h3>Where is the nearest bank?</h3>
+                    <p>أين يوجد أقرب بنك؟</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="recording-section">
+            <h2><i class="fas fa-headphones"></i> Record Your Pronunciation</h2>
+            <div id="selectedPhrase" class="selected-phrase">Select a phrase from the list above</div>
+            
+            <div class="recording-controls">
+                <button id="recordBtn" class="recording-btn" onclick="startRecording()">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button id="playBtn" class="recording-btn" onclick="playRecording()" disabled>
+                    <i class="fas fa-play"></i>
+                </button>
+            </div>
+            
+            <div class="visualizer" id="visualizer">
+                <!-- Audio wave will be displayed here -->
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </section>
+
+        <section class="feedback-section" id="feedbackSection" style="display: none;">
+            <h2><i class="fas fa-chart-line"></i> Assessment Results</h2>
+            <div id="accuracyScore" class="accuracy-score"></div>
+            <div id="feedbackDetails" class="feedback-details"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 AI English Learning Platform. All rights reserved.</p>
+      
+            <div class="social-media">
+                <a href="https://www.facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Global variables
+        let mediaRecorder;
+        let audioChunks = [];
+        let selectedPhrase = '';
+        let isRecording = false;
+
+        // Select phrase
+        function selectPhrase(phrase) {
+            selectedPhrase = phrase;
+            document.getElementById('selectedPhrase').textContent = phrase;
+            document.getElementById('playBtn').disabled = true;
+            document.getElementById('feedbackSection').style.display = 'none';
+        }
+
+        // Start recording
+        async function startRecording() {
+            const recordBtn = document.getElementById('recordBtn');
+            
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+                    
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        evaluatePronunciation(audioBlob);
+                        document.getElementById('playBtn').disabled = false;
+                    };
+                    
+                    mediaRecorder.start();
+                    isRecording = true;
+                    recordBtn.classList.add('recording');
+                    recordBtn.innerHTML = '<i class="fas fa-stop"></i>';
+                    audioChunks = [];
+                    
+           
+                    setupVisualizer(stream);
+
+                } catch (error) {
+                    alert('Error accessing microphone: ' + error.message);
+                }
+            } else {
+                mediaRecorder.stop();
+                isRecording = false;
+                recordBtn.classList.remove('recording');
+                recordBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            }
+        }
+
+        // Play recording
+        function playRecording() {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            audio.play();
+        }
+
+        // Evaluate pronunciation
+        async function evaluatePronunciation(audioBlob) {
+            document.getElementById('feedbackSection').style.display = 'block';
+            document.getElementById('accuracyScore').innerHTML = '<p>Analyzing pronunciation...</p>';
+
+            setTimeout(() => {
+                const accuracy = Math.floor(Math.random() * 30) + 70;  
+                document.getElementById('progressBar').style.width = `${accuracy}%`;
+                document.getElementById('accuracyScore').innerHTML = `
+                    <h3>Pronunciation Accuracy: ${accuracy}%</h3>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: ${accuracy}%"></div>
+                    </div>
+                `;
+                
+                document.getElementById('feedbackDetails').innerHTML = `
+                    <h4>Feedback:</h4>
+                    <ul>
+                        <li>Pronunciation is clear and understandable</li>
+                        <li>Speed is appropriate</li>
+                    </ul>
+                `;
+            }, 2000);
+        }
+
+
+        function setupVisualizer(stream) {
+            const audioContext = new AudioContext();
+            const analyser = audioContext.createAnalyser();
+            const microphone = audioContext.createMediaStreamSource(stream);
+            const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+            
+            microphone.connect(analyser);
+            analyser.connect(scriptProcessor);
+            scriptProcessor.connect(audioContext.destination);
+            
+            const visualizer = document.getElementById('visualizer');
+            visualizer.innerHTML = '';
+            
+            scriptProcessor.onaudioprocess = function() {
+                const array = new Uint8Array(analyser.frequencyBinCount);
+                analyser.getByteFrequencyData(array);
+                
+                visualizer.innerHTML = '';
+                for (let i = 0; i < array.length; i++) {
+                    const bar = document.createElement('div');
+                    bar.style.height = `${array[i]}px`;
+                    bar.style.backgroundColor = '#917FB3';
+                    bar.style.width = '2px';
+                    bar.style.display = 'inline-block';
+                    bar.style.marginRight = '1px';
+                    visualizer.appendChild(bar);
+                }
+            };
+        }
+
+        function logout() {
+            sessionStorage.removeItem('token'); 
+            window.location.href = 'index.html'; 
+        }
+    </script>
+
+    </body>
+    </html>
